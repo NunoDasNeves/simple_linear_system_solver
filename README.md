@@ -1,13 +1,13 @@
-## Simple Linear System Solver (slsolve)
+# Simple Linear System Solver (slsolve)
 Simple (and naive) implementations of basic linear equation solvers in C.  
-WARNING: Primarily for self-education - don't actually use this!
+*WARNING:* Primarily for self-education - don't actually use this!
 
-# Build
+## Build
 `make` to build `slsolve` binaries  
 `make test` to run build and run tests  
 `make clean` to remove binaries
 
-# Input
+## Input
 A system of linear equations, in the form of a matrix A and vector b.
 
 Element i,j of A is the coefficient of the jth unknown variable in the ith row of A, and  
@@ -34,7 +34,7 @@ n = number of unknown variables
 
 It's best to write the system of equations to a file and pipe it to stdin of the solver.
 
-# Output
+## Output
 (Assuming no fatal error occurs...)  
 One line with the result of the solver - `success` or `failure`. If the result is `failure`, an error message is printed.  
 Otherwise, the number of solutions of the system is printed - `single`, `infinite` or `none`.  
@@ -43,7 +43,7 @@ If there is a single solution, it is printed as a space-separated list of double
 Errors that cause `failure` to be printed:  
 TODO
 
-# Usage and Examples
+## Usage and Examples
 See tests directory for example inputs
 ```
 -i          specify the iterative solver (default)
@@ -58,6 +58,6 @@ Solve a system of linear equations specified in 'input.txt' using the direct sol
 
 ... TODO
 
-# Precision and Performance
+## Precision and Performance
 This implementation is not performant or particularly precise.
 
