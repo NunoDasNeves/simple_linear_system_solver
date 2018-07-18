@@ -1,6 +1,6 @@
 # slsolve makefile
 CC=gcc
-CFLAGS=-lm#-Wall -Werror "
+CFLAGS=-Wall -Werror -lm
 BINS=slsolve
 SRCS=$(wildcard *.c)
 

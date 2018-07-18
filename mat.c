@@ -5,7 +5,7 @@
 
 // allocate a new matrix of size rows*cols
 sl_mat sl_mat_alloc(size_t rows, size_t cols) {
-    sl_mat m = {rows, cols, NULL};
+    sl_mat m = {m:rows, n:cols};
     m.dat = (double *)calloc(rows*cols, sizeof(double));
     if (m.dat == NULL) {
         perror("Couldn't allocate matrix");
@@ -22,7 +22,7 @@ void sl_mat_free(sl_mat m) {
 // multiply two existing, allocated matrices A and B, returning the result in a newly allocated matrix
 sl_mat sl_mat_mul(sl_mat A, sl_mat B) {
     if (A.n != B.m) {
-        fprintf(stderr, "Can't multiply two matrices with %u columns and %u rows respectively\n", A.n, B.m);
+        fprintf(stderr, "Can't multiply two matrices with %lu columns and %lu rows respectively\n", A.n, B.m);
         exit(EXIT_FAILURE);
     }
     // new matrix with A's no of rows, B's no of cols
