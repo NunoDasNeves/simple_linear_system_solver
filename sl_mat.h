@@ -1,18 +1,21 @@
 #ifndef SL_MAT_H
 #define SL_MAT_H
 
+#include<math.h>
+#include<stddef.h>
+
 // A sl_mat matrix
 typedef struct {
     size_t m, n;       // # rows, # columns
-    double dat*;    // the data in row-major order
+    double * dat;    // the data in row-major order
 } sl_mat;
 
 // access element m[i][j] of a matrix m (ith row, jth column)
 #define SL_MAT_GET(m,i,j) m.dat[i*m.n + j]
 
-// macros for comparing doubles
-#define SL_D_EQ() //TODO
-#define SL_D_NEQ() // TODO
+// macro for comparing doubles
+#define SL_EPSILON 1e-6
+#define SL_D_EQ(a, b) (fabs(a - b) < SL_EPSILON)
 
 // allocate a new matrix of size rows*cols
 extern sl_mat sl_mat_alloc(size_t rows, size_t cols);

@@ -1,57 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "sl_solver.h"
 #include "sl_mat.h"
 
 // basic whitebox testing for matrix library and solvers
 
-#define DOTEST(f)           \
-    if (f()) {              \
-        printf("FAILED\n"); \
-        return 1;           \
-    else printf("PASSED\n")
+static void mat_1() {
+    printf("Simple matrix mul\n");
+    double a[] = {2.0,0,0,2.0};
+    double b[] = {3.0,34.2323,21.23,42.019923};
+    sl_mat A, B, C;
+    A.dat = a;
+    B.dat = b;
+    A.m = A.n = B.m = B.n = 2;
+    C = sl_mat_mul(A, B);
+    for (int i = 0; i < 4; ++i)
+        assert(SL_D_EQ(2.0*B.dat[i], C.dat[i]));
+    sl_mat_free(C);
+}
 
-#define PRINTTEST(s) printf("Running Test "s": ");
-
-static int mat_1() {
-    PRINTTEST("Simple matrix mul")
+static void mat_2() {
+    printf("Matrix factors mul\n");
     // TODO
-    return 1;
 }
 
-static int mat_2() {
-    PRINTTEST("Matrix factors mul")
+static void mat_3() {
+    printf("Matrix vector mul\n");
     // TODO
-    return 1;
 }
 
-static int mat_3() {
-    PRINTTEST("Multi matrix mul")
+static void mat_4() {
+    printf("Multi matrix mul\n");
     // TODO
-    return 1;
 }
 
-static int test_mat() {
-    printf("**** Testing sl_matrix library");
-    DOTEST(mat_1);
-    DOTEST(mat_2);
-    DOTEST(mat_3);
-    printf("sl_matrix library: ALL PASSED");
-    return 0;
+static void test_mat() {
+    printf("**** Testing matrix library\n");
+    mat_1();
+    mat_2();
+    mat_3();
+    printf("sl_matrix library: ALL PASSED\n\n");
 }
 
-static int test_i_solver() {
+static void test_i_solver() {
     // TODO
-    return 1;
 }
 
-static int test_d_solver() {
+static void test_d_solver() {
     // TODO
-    return 1;
 }
 
-int sl_run_tests() {
-    if (test_mat() || test_i_solver() || test_d_solver()) return 1;
-    return 0;
+void sl_run_tests() {
+    test_mat();
+    test_i_solver();
+    test_d_solver();
 }

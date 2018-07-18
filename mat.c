@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <error.h>
+#include <stdio.h>
 
 #include "sl_mat.h"
 
@@ -33,7 +33,7 @@ sl_mat sl_mat_mul(sl_mat A, sl_mat B) {
     for (size_t i = 0; i < A.m; ++i) {          // row in A
         for (size_t j = 0; j < B.n; ++j) {      // col in B
             for (size_t k = 0; k < A.n; ++k) {  // col in A, row in B
-                C.dat[c] += A.dat[i*A.n+k]*B.dat[k*B.n+j]
+                C.dat[c] += A.dat[i*A.n+k]*B.dat[k*B.n+j];
             }
             // next entry in c, to save multiplications
             ++c;

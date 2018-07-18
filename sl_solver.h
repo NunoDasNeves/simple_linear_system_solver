@@ -3,7 +3,7 @@
 
 #include "sl_mat.h"
 
-extern int sl_run_tests();
+extern void sl_run_tests();
 
 // TODO
 
