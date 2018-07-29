@@ -36,28 +36,19 @@ It's best to write the system of equations to a file and pipe it to stdin of the
 
 ## Output
 (Assuming no fatal error occurs...)  
-One line with the result of the solver - `success` or `failure`. If the result is `failure`, an error message is printed.  
-Otherwise, the number of solutions of the system is printed - `single`, `infinite` or `none`.  
+The number of solutions of the system is printed - `single`, `infinite` or `none`.  
 If there is a single solution, it is printed as a space-separated list of doubles.
-
-Errors that cause `failure` to be printed:  
-TODO
 
 ## Usage and Examples
 See tests directory for example inputs
 ```
--i          specify the iterative solver (default)
--d          specify the direct solver
--e BOUND    select error bound (default = TODO)
--t          run whitebox tests (nothing else happens)
+-t          run tests (no input is read)
 ```
 TODO more options!
 
-Solve a system of linear equations specified in 'input.txt' using the direct solver:
+Solve a system of linear equations specified in 'input.txt':
 ```./slsolve -d < input.txt```
 
-... TODO
-
 ## Precision and Performance
-This implementation is not performant or particularly precise.
+This implementation is not performant or precise
 
