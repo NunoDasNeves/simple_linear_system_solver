@@ -58,7 +58,8 @@ void sl_mat_mul_row(sl_mat A, size_t row, double factor) {
         fprintf(stderr, "Out of bounds sl_mat_mul_row\n");
         exit(EXIT_FAILURE);
     }
-    for (size_t i = row*A.cols; i < A.cols; ++i) {
+    size_t end = row * A.cols + A.cols;
+    for (size_t i = row*A.cols; i < end; ++i) {
         A.dat[i] *= factor;
     }
 }
@@ -73,8 +74,12 @@ void sl_mat_copy_col(sl_mat A, sl_mat B, size_t from, size_t to) {
     if (A.rows != B.rows) {
         fprintf(stderr, "Matrices must have same number of rows sl_mat_copy_col\n");
         exit(EXIT_FAILURE);
+    } else if (from > A.cols || to > B.cols) {
+        fprintf(stderr, "Out of bounds sl_mat_copy_col\n");
+        exit(EXIT_FAILURE);
     }
-    for(;from < A.rows; from += A.cols, to += A.cols) {
+    size_t len = A.cols*A.rows;
+    for(;from < len; from += A.cols, to += B.cols) {
         B.dat[to] = A.dat[from];
     }
 }
@@ -82,6 +87,9 @@ void sl_mat_copy_col(sl_mat A, sl_mat B, size_t from, size_t to) {
 void sl_mat_copy_row(sl_mat A, sl_mat B, size_t from, size_t to) {
     if (A.cols != B.cols) {
         fprintf(stderr, "Matrices must have same number of cols sl_mat_copy_row\n");
+        exit(EXIT_FAILURE);
+    } else if (from > A.rows || to > B.rows) {
+        fprintf(stderr, "Out of bounds sl_mat_copy_row\n");
         exit(EXIT_FAILURE);
     }
     memcpy(&B.dat[to*B.cols], &A.dat[from*B.cols], B.cols*(sizeof(double)));
@@ -92,7 +100,7 @@ void sl_mat_print(sl_mat A) {
     for (size_t i = 0; i < A.rows; ++i) {          // row in A
         printf("%s", i == 0 ? "" : "  ");
         for (size_t j = 0; j < A.cols; ++j) {      // col in A
-            printf("%lf ", A.dat[i*A.cols+j]);
+            printf("%.3lf ", A.dat[i*A.cols+j]);
         }
         printf("%s\n", i == A.rows-1 ? "]" : "");
     }

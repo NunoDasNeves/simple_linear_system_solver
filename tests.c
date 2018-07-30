@@ -71,29 +71,75 @@ static void mat_4() {
     sl_mat_free(A);
 }
 
+static void mat_5() {
+    printf("  Matrix col copy\n");
+    double a[] = {3.0,34.2323,-21.23,42.019923,334.232,2882.2324};
+    sl_mat A = {rows:2, cols:3, dat:a};
+    sl_mat B = sl_mat_alloc(2,3);
+    sl_mat_copy_col(A, B, 0, 1);
+    sl_mat_copy_col(A, B, 1, 2);
+    sl_mat_copy_col(A, B, 2, 0);
+
+    for (int i = 0; i < 3; ++i) {
+        assert(SL_D_EQ(A.dat[i], B.dat[(i+1)%3]));
+        assert(SL_D_EQ(A.dat[i+3], B.dat[(i+1)%3+3]));
+    }
+
+    sl_mat_free(B);
+}
+
 static void test_mat() {
     printf("**** Testing matrix library\n");
     mat_1();
     mat_2();
     mat_3();
     mat_4();
+    mat_5();
     printf("Matrix library: ALL PASSED\n\n");
 }
 
 
 static void g_1() {
     printf("  Single solution 2 equation system 1\n");
-    assert(0);
+    double _a[] = {1,-1,1,1};
+    double _b[] = {0,2};
+    sl_mat A = {rows:2, cols:2, dat:_a};
+    sl_mat b = {rows:2, cols:1, dat:_b};
+
+    enum sl_result r = ZERO;
+    sl_mat x = sl_g_solve(A, b, &r);
+
+    // single solution (1,1)
+    assert(r == ONE);
+    double sol[] = {1, 0, 1, 0, 1, 1};
+    for (int i = 0; i < 6; ++i) {
+        assert(SL_D_EQ(x.dat[i], sol[i]));
+    }
 }
 
 static void g_2() {
     printf("  Single solution 2 equation system 2\n");
-    assert(0);
+    // TODO
+
 }
 
 static void g_3() {
-    printf("  No solution 2 equation system\n");
-    assert(0);
+    printf("  No solution 3 equation system\n");
+    double _a[] = { 1,  3, -1,
+                    2, -7,  4,
+                    4, -1,  2};
+    double _b[] = {4, -3, 8};
+    sl_mat A = {rows:3, cols:3, dat:_a};
+    sl_mat b = {rows:3, cols:1, dat:_b};
+
+    enum sl_result r = ONE;
+    sl_mat x = sl_g_solve(A, b, &r);
+
+    // no solution (1,1)
+    assert(r == ZERO);
+    assert(x.dat == NULL);
+    assert(x.rows == 0);
+    assert(x.cols == 0);
 }
 
 static void g_4() {
@@ -106,10 +152,6 @@ static void g_5() {
     assert(0);
 }
 
-static void g_6() {
-    printf("  No solution 3 equation system\n");
-    assert(0);
-}
 
 static void test_g_solver() {
     printf("**** Testing gaussian solver\n");
@@ -118,7 +160,6 @@ static void test_g_solver() {
     g_3();
     g_4();
     g_5();
-    g_6();
     printf("Gaussian solver: ALL PASSED\n\n");
 }
 
