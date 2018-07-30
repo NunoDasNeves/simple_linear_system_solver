@@ -94,6 +94,11 @@ sl_mat sl_g_solve(sl_mat A, sl_mat b, enum sl_result * num_solutions) {
         // divide the row by the pivot number make the pivot element = 1
         sl_mat_mul_row(aug, e_row, 1.0/SL_MAT_GET(aug, e_row, pivot_pos));
 
+#if DEBUG
+        printf("Result:\n");
+        sl_mat_print(aug);
+#endif
+
         // go through every row (skipping e_row)
         // for each row which has a number at pivot_pos, 'reduce' that number to 0 by subtracting a multiple of e_row.
         // this reduces rows to their reduced echelon form

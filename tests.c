@@ -9,7 +9,7 @@
 // basic whitebox testing for matrix library and solvers
 
 static void mat_1() {
-    printf("  Simple matrix mul\n");
+    printf("* Simple matrix mul\n");
     double a[] = {2.0,0,0,2.0};
     double b[] = {3.0,-34.2323,21.23,42.019923};
     sl_mat A, B, C;
@@ -22,10 +22,11 @@ static void mat_1() {
     for (int i = 0; i < 4; ++i)
         assert(SL_D_EQ(2.0*B.dat[i], C.dat[i]));
     sl_mat_free(C);
+    printf("\n");
 }
 
 static void mat_2() {
-    printf("  Matrix factor mul\n");
+    printf("* Matrix factor mul\n");
     double a[] = {3.0,34.2323,21.23,-42.019923};
     double f = 42.2342;
     sl_mat A = sl_mat_alloc(2,2);
@@ -36,10 +37,11 @@ static void mat_2() {
         assert(SL_D_EQ(f*a[i], A.dat[i]));
 
     sl_mat_free(A);
+    printf("\n");
 }
 
 static void mat_3() {
-    printf("  Matrix vector mul\n");
+    printf("* Matrix vector mul\n");
     double a[] = {3.0,34.2323,21.23,42.019923}; // matrix
     double b[] = {62.345,-5322.234};            // vector
     sl_mat A, B, C;
@@ -53,10 +55,11 @@ static void mat_3() {
     assert(SL_D_EQ(a[0]*b[0]+a[1]*b[1], C.dat[0]));
     assert(SL_D_EQ(a[2]*b[0]+a[3]*b[1], C.dat[1]));
     sl_mat_free(C);
+    printf("\n");
 }
 
 static void mat_4() {
-    printf("  Matrix row mul\n");
+    printf("* Matrix row mul\n");
     double a[] = {3.0,34.2323,-21.23,42.019923,334.232,2882.2324};
     double f = -42.9807;
     sl_mat A = sl_mat_alloc(2,3);
@@ -69,10 +72,11 @@ static void mat_4() {
         assert(SL_D_EQ(a[i], A.dat[i]));
 
     sl_mat_free(A);
+    printf("\n");
 }
 
 static void mat_5() {
-    printf("  Matrix col copy\n");
+    printf("* Matrix col copy\n");
     double a[] = {3.0,34.2323,-21.23,42.019923,334.232,2882.2324};
     sl_mat A = {rows:2, cols:3, dat:a};
     sl_mat B = sl_mat_alloc(2,3);
@@ -86,6 +90,7 @@ static void mat_5() {
     }
 
     sl_mat_free(B);
+    printf("\n");
 }
 
 static void test_mat() {
@@ -100,7 +105,7 @@ static void test_mat() {
 
 
 static void g_1() {
-    printf("  Single solution 2 equation system 1\n");
+    printf("* Single solution 2 equation system 1\n");
     double _a[] = {1,-1,1,1};
     double _b[] = {0,2};
     sl_mat A = {rows:2, cols:2, dat:_a};
@@ -115,16 +120,30 @@ static void g_1() {
     for (int i = 0; i < 6; ++i) {
         assert(SL_D_EQ(x.dat[i], sol[i]));
     }
+    printf("\n");
 }
 
 static void g_2() {
-    printf("  Single solution 2 equation system 2\n");
-    // TODO
+    printf("* Single solution 2 equation system 2\n");
+    double _a[] = {1.2, -1.2, 13.3, 81.2};
+    double _b[] = {83.23, 21.34};
+    sl_mat A = {rows:2, cols:2, dat:_a};
+    sl_mat b = {rows:2, cols:1, dat:_b};
 
+    enum sl_result r = ZERO;
+    sl_mat x = sl_g_solve(A, b, &r);
+
+    // single solution (1,1)
+    assert(r == ONE);
+    double sol[] = {1, 0, 59.8226102292761, 0, 1, -9.535723104056437};
+    for (int i = 0; i < 6; ++i) {
+        assert(SL_D_EQ(x.dat[i], sol[i]));
+    }
+    printf("\n");
 }
 
 static void g_3() {
-    printf("  No solution 3 equation system\n");
+    printf("* No solution 3 equation system\n");
     double _a[] = { 1,  3, -1,
                     2, -7,  4,
                     4, -1,  2};
@@ -140,15 +159,32 @@ static void g_3() {
     assert(x.dat == NULL);
     assert(x.rows == 0);
     assert(x.cols == 0);
+    printf("\n");
 }
 
 static void g_4() {
-    printf("  Inf solutions 2 equation system\n");
+    printf("* Inf solutions 2 equation system\n");
+    double _a[] = {1, 1, 2, 2};
+    double _b[] = {3, 6};
+    sl_mat A = {rows:2, cols:2, dat:_a};
+    sl_mat b = {rows:2, cols:1, dat:_b};
+
+    enum sl_result r = ZERO;
+    sl_mat x = sl_g_solve(A, b, &r);
+
+    // single solution (1,1)
+    assert(r == INF);
+    double sol[] = {1, 1, 3, 0, 0, 0};
+    for (int i = 0; i < 6; ++i) {
+        assert(SL_D_EQ(x.dat[i], sol[i]));
+    }
+    printf("\n");
     assert(0);
 }
 
 static void g_5() {
-    printf("  Solution 3 equation system\n");
+    printf("* Solution 3 equation system\n");
+    printf("\n");
     assert(0);
 }
 
