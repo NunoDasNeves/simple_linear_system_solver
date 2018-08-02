@@ -34,6 +34,9 @@ extern void sl_mat_copy_col(sl_mat A, sl_mat B, size_t from, size_t to);
 // copy an entire row from one matrix to another, from and to denote 0-indexed rows
 extern void sl_mat_copy_row(sl_mat A, sl_mat B, size_t from, size_t to);
 
+// transpose a matrix, returning the transposed matrix
+extern sl_mat sl_mat_transpose(sl_mat A);
+
 // pretty print a matrix
 extern void sl_mat_print(sl_mat A);
 

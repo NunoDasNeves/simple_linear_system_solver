@@ -179,13 +179,68 @@ static void g_4() {
         assert(SL_D_EQ(x.dat[i], sol[i]));
     }
     printf("\n");
-    assert(0);
 }
 
 static void g_5() {
     printf("* Solution 3 equation system\n");
     printf("\n");
     assert(0);
+}
+
+static void G_test() {
+    double _a[] = {
+        -63.0f/64.0f, 15.0f/64.0f,  15.0f/64.0f,  15.0f/64.0f,  1.0f/64.0f,   1.0f/64.0f,   1.0f/64.0f,   15.0f/64.0f,
+        15.0f/64.0f,  -63.0f/64.0f, 15.0f/64.0f,  1.0f/64.0f,   15.0f/64.0f,  1.0f/64.0f,   15.0f/64.0f,  1.0f/64.0f,
+        1.0f/64.0f,   59.0f/192.0f, -63.0f/64.0f, 59.0f/192.0f, 1.0f/64.0f,   1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,
+        1.0f/64.0f,   1.0f/64.0f,   1.0f/64.0f,   -63.0f/64.0f, 29.0f/64.0f,  29.0f/64.0f,  1.0f/64.0f,   1.0f/64.0f,
+        1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    -7.0f/8.0f,   1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,
+        59.0f/192.0f, 1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,   1.0f/64.0f,   -63.0f/64.0f, 59.0f/192.0f, 1.0f/64.0f,
+        1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    -7.0f/8.0f,   1.0f/8.0f,
+        59.0f/192.0f, 1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,   1.0f/64.0f,   -63.0f/64.0f
+    };
+    double _b[] = {0, 0, 0, 0, 0, 0, 0, 0};
+    sl_mat A = {rows:8, cols:8, dat:_a};
+    sl_mat b = {rows:8, cols:1, dat:_b};
+    sl_mat A_T = sl_mat_transpose(A);
+
+    enum sl_result r = ZERO;
+    sl_mat x = sl_g_solve(A_T, b, &r);
+
+    sl_mat_free(x);
+    sl_mat_free(A_T);
+}
+
+
+static void pagerank_test() {
+    double _a[] = {
+        1.0f/64.0f,   15.0f/64.0f,  15.0f/64.0f,  15.0f/64.0f,  1.0f/64.0f,   1.0f/64.0f,   1.0f/64.0f,   15.0f/64.0f,
+        15.0f/64.0f,  1.0f/64.0f,   15.0f/64.0f,  1.0f/64.0f,   15.0f/64.0f,  1.0f/64.0f,   15.0f/64.0f,  1.0f/64.0f,
+        1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,   1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,
+        1.0f/64.0f,   1.0f/64.0f,   1.0f/64.0f,   1.0f/64.0f,   29.0f/64.0f,  29.0f/64.0f,  1.0f/64.0f,   1.0f/64.0f,
+        1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,
+        59.0f/192.0f, 1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,   1.0f/64.0f,   1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,
+        1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,
+        59.0f/192.0f, 1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,   59.0f/192.0f, 1.0f/64.0f,   1.0f/64.0f,   1.0f/64.0f
+    };
+    // init to 1/N
+    double _p[] = {1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,    1.0f/8.0f,   1.0f/8.0f};
+    sl_mat G = {rows:8, cols:8, dat:_a};
+    sl_mat p = sl_mat_alloc(1, 8);
+    memcpy(p.dat, _p, 8*sizeof(double));
+
+    sl_mat x; // not allocated
+
+    for (int i = 0; i < 7; ++i) {
+        x = sl_mat_mul(p, G);
+        sl_mat_free(p);
+        p.dat = x.dat;
+        sl_mat_print(x);
+    }
+    //for (int i = 0; i < 8; ++i) {
+    //    
+    //}
+
+    sl_mat_free(x);
 }
 
 
@@ -195,6 +250,8 @@ static void test_g_solver() {
     g_2();
     g_3();
     g_4();
+    G_test();
+    pagerank_test();
     g_5();
     printf("Gaussian solver: ALL PASSED\n\n");
 }

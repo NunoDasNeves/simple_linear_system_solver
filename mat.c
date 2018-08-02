@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #include "sl_mat.h"
 
@@ -93,6 +94,19 @@ void sl_mat_copy_row(sl_mat A, sl_mat B, size_t from, size_t to) {
         exit(EXIT_FAILURE);
     }
     memcpy(&B.dat[to*B.cols], &A.dat[from*B.cols], B.cols*(sizeof(double)));
+}
+
+sl_mat sl_mat_transpose(sl_mat A) {
+    assert(A.dat);
+    sl_mat A_T = sl_mat_alloc(A.cols, A.rows);
+
+    for (int i = 0; i < A.rows; ++i) {
+        for (int j = 0; j < A.cols; ++j) {
+            SL_MAT_GET(A_T,j,i) = SL_MAT_GET(A,i,j);
+        }
+    }
+
+    return A_T;
 }
 
 void sl_mat_print(sl_mat A) {
